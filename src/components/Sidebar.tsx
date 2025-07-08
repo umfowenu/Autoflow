@@ -6,24 +6,18 @@ import {
   BarChart3, 
   Users, 
   Settings,
-  Shield,
-  X,
-  Menu
+  Menu,
+  X
 } from 'lucide-react'
 
 interface SidebarProps {
   activeView: string
-  setActiveView: (view: any) => void
+  setActiveView: (view: string) => void
   isOpen: boolean
   setIsOpen: (open: boolean) => void
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  activeView, 
-  setActiveView, 
-  isOpen, 
-  setIsOpen 
-}) => {
+export function Sidebar({ activeView, setActiveView, isOpen, setIsOpen }: SidebarProps) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'workflows', label: 'Workflows', icon: Workflow },
@@ -50,58 +44,43 @@ export const Sidebar: React.FC<SidebarProps> = ({
       `}>
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
           <div className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-amber-500" />
+            <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
+              <Workflow className="w-5 h-5 text-white" />
+            </div>
             <span className="text-xl font-bold text-gray-900">AutoFlow</span>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-600"
+            className="lg:hidden p-1 rounded-md hover:bg-gray-100"
           >
-            <X className="h-5 w-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
         
-        <nav className="mt-8 px-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon
-              return (
-                <li key={item.id}>
-                  <button
-                    onClick={() => {
-                      setActiveView(item.id)
-                      setIsOpen(false)
-                    }}
-                    className={`
-                      w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors
-                      ${activeView === item.id
-                        ? 'bg-amber-50 text-amber-700 border-r-2 border-amber-500'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      }
-                    `}
-                  >
-                    <Icon className="mr-3 h-5 w-5" />
-                    {item.label}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+        <nav className="mt-6 px-3">
+          {menuItems.map((item) => {
+            const Icon = item.icon
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveView(item.id)
+                  setIsOpen(false)
+                }}
+                className={`
+                  w-full flex items-center px-3 py-2 mb-1 text-left rounded-lg transition-colors
+                  ${activeView === item.id 
+                    ? 'bg-amber-50 text-amber-700 border-r-2 border-amber-500' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <Icon className="w-5 h-5 mr-3" />
+                {item.label}
+              </button>
+            )
+          })}
         </nav>
-        
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
-          <div className="flex items-center space-x-3">
-            <img
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"
-              alt="User avatar"
-              className="h-10 w-10 rounded-full"
-            />
-            <div>
-              <p className="text-sm font-medium text-gray-900">John Doe</p>
-              <p className="text-xs text-gray-500">Marketing Manager</p>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   )
